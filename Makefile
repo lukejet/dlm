@@ -4,7 +4,7 @@ topdown:
 	cd example; make
 
 test: modules.c main.c library.c
-	gcc -o test modules.c main.c library.c -ldl
+	gcc -o test modules.c main.c library.c service.c -ldl
 
 clean:
 	rm test *.so
