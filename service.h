@@ -6,11 +6,14 @@
 
 
 typedef int (*Proc)(void* args);
+
 typedef struct Service
 {
     char* name;
     char* description;
     Proc fn;
+
+    struct Service* next;
 } Service;
 
 int do_services();

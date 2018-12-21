@@ -4,10 +4,10 @@ all: topdown.so modB.so
 	cp *.so ../
 
 topdown.so: topdown.c  
-	gcc -shared -o topdown.so topdown.c  -I..
+	gcc -g -shared -o $@ topdown.c ../service.c -I.. -fPIC
 	
 modB.so: 
-	gcc -shared -o $@ modB.c  -I..
+	gcc -g -shared -o $@ modB.c  -I.. -fPIC
 
 clean: 
 	rm -rf *.so

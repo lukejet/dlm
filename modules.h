@@ -1,6 +1,7 @@
 #ifndef _MODULES_H_
 #define _MODULES_H_
 
+#include "service.h"
 #include "library.h"
 
 typedef enum {
@@ -14,7 +15,9 @@ typedef struct Module
     char name[32];
     char version[32];
     HANDLE lib;
-    
+    Service* srv_;
+
+    struct Module* next;
 } Module_t;
 
 
