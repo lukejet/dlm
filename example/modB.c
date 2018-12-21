@@ -17,11 +17,11 @@ static char* module_version = "1.0";
 
 //module_type = ;
 
-int module_init(char** name, char** version)
+int module_init(char* name, char* version)
 {
     int ret =0;
-    strcpy(*name, module_name);
-    strcpy(*version, module_version);
+    strcpy(name, module_name);
+    strcpy(version, module_version);
 
     // add code here
     

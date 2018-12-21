@@ -14,7 +14,8 @@ typedef struct Module
     char name[32];
     char version[32];
     HANDLE lib;
-    
+
+    struct Module* next;
 } Module_t;
 
 

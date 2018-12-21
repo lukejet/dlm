@@ -7,7 +7,12 @@
 typedef int (*Func_init)(char**, char**);
 typedef int (*Func_release)();
 
-static Module_t* sm;
+static Module_t* lsm;
+
+int init_sm()
+{
+	lsm = NULL;
+}
 
 static int  initMod(Module_t* module)
 {
@@ -20,7 +25,7 @@ static int  initMod(Module_t* module)
 		printf("error: no init function found.");
 		return -1;
 	}
-	ret = init_func(&(module->name), &(module->version));
+	ret = init_func(module->name, module->version);
 	if (ret < 0)
 	{
 		return  ret;
@@ -55,18 +60,43 @@ static int  releaseMod(Module_t* module)
 }
 static int addtoModList(Module_t* mod)
 {
-	sm = mod;
-	return 0;
-}
-static Module_t*  findMod(char* name)
-{
-	return sm;
+	if (lsm == NULL)
+	{	
+		lsm = mod;
+		return 0;
+	}
+	Module_t* tmp = lsm->next;
+	lsm->next = mod;
+	mod->next = tmp;
 	return 0;
 }
 
+static Module_t*  findMod(char* name)
+{
+	
+	Module_t* p = lsm;
+	for(; p!= NULL; )
+	{	 
+		if(!strcmp(p->name, name))
+			break;
+		p = p->next;
+	}
+	
+	return p;
+}
+
 int lsMods()
-{
+{
    // listOfModule;
+   Module_t* p = lsm;
+   
+   printf("************** list the modules **************\n");
+   for(; p!= NULL; )
+   {	
+	printf("[%s ver%s]:%s \n", p->name, p->version, p->so_path);
+   	p = p->next;
+   }
+   printf("\n");
 
     //printModules();
     return 0;
@@ -75,7 +105,7 @@ int insMod(char* path, int mode)
 {
 	int ret = 0;
 	Module_t *module = (Module_t*)malloc(sizeof (Module_t));
-	//memset(module, 0, sizeof (Module_t));
+	memset(module, 0, sizeof (Module_t));
 	
 	strcpy(module->so_path, path);
 	
